@@ -5,8 +5,15 @@
 
 int main()
 {
-	OptLib::test1();
-	OptLib::test2();
-	OptLib::test3();
+	OptLib::test_plus();
+	OptLib::test_plus_scalar();
+	OptLib::test_minus_scalar();
+	OptLib::test_minus();
+	OptLib::test_mult();
+	OptLib::test_mult_scalar();
+	OptLib::test_div_scalar();
+	OptLib::test_abs();
+	OptLib::test_sqrt();
+	OptLib::test_matrix();
 }
 

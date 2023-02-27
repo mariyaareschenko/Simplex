@@ -5,27 +5,63 @@
 #include "Stream.h"
 namespace OptLib
 {
-    void test1()
+    void test_plus()
     {
         Point<2> p1{ 1, 2 }, p2{ 3, 4 };
 
-        std::cout << "Take point:"
-            << "\np1 = " << p1
-            << "\nand point:"
-            << "\np2 = " << p2
-            << "\nand ADD them together to get:"
-            << "\nout = " << p1 + p2
-            << "\n\n";
+        std::cout << "\nout = " << "{" << p1 + p2 << "}";
     }
-    void test2()
+    void test_plus_scalar()
     {
         Point<2> p1{ 1, 2 };
-        std::cout <<  p1 + 4.7;
+        std::cout << "\nout = " "{" << p1 + 4.7 << "}";
     }
-    void test3()
+    void test_minus_scalar()
     {
         Point<2> p1{ 1, 2 };
-        std::cout << p1 - 4.7;
+        std::cout << "\nout = " << "{" << p1 -4.7  << "}";
+    }
+    void test_minus()
+    {
+        Point<2> p1{ 2, 1 }, p2{ 4, 3 };
+        std::cout << "\nout = "<< "{" << p1 - p2 << "}";
+    }
+    void test_mult()
+    {
+        Point<2> p1{ 2, 1 }, p2{ 4, 3 };
+        std::cout << "\nout =  " << "{" << p1 * p2 << "}";
+    }
+    void test_mult_scalar()
+    {
+        Point<2> p1{ 1,2 };
+        std::cout << "\nout = " << "{" << p1 *2.1 << "}";
+    }
+    void test_div_scalar()
+    {
+        Point<2> p{ 1,2 };
+        std::cout << "\nout = " << "{"<<p / 2.3<<"}";
+    }
+    void test_abs()
+    {
+        Point <2> p{ -4,-6 };
+        auto res = Abs(p);
+        std::cout << "\nout" << "{" << res << "}";
+    }
+    void test_sqrt()
+    {
+        Point<2> p{ 4,9 };
+        auto res = Sqrt(p);
+        std::cout << "\nout" << "{" << res << "}";
+    }
+    void test_matrix()
+    {
+        Point<2> p1{ -1,4 }, p2{ 2, 1.5 }, p3{-0.5, 3}, pv{ 2,-2 };
+        SetOfPoints <2, Point<2>> mat1 = { p1,p2 };
+        SetOfPoints <2, Point<2>> mat2 = { p1,p3 };
+        Point<2> res1 = mat1 * pv;
+        SetOfPoints<2, Point<2>> res2 = mat1 * mat2;
+        std::cout<< "\nout" << "{" << res1 << "}";
+        std::cout<< "\nout" << "{" << res2 << "}";
     }
 }
     

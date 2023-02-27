@@ -11,4 +11,13 @@ namespace OptLib
 		}
 		return o;
 	}
+	template<class Stream, size_t count, typename point>
+	Stream& operator<<(Stream& o, const SetOfPoints<count, point>& p)
+	{
+		o << p[0];
+		for (size_t i = 1; i < p.size(); ++i) {
+			o << ", " << p[i];
+		}
+		return o;
+	}
 }
