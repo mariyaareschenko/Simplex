@@ -15,5 +15,7 @@ int main()
 	OptLib::test_abs();
 	OptLib::test_sqrt();
 	OptLib::test_matrix();
+	OptLib::test_mean();
+	OptLib::test_dis();
 }
 

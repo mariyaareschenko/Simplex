@@ -3,11 +3,14 @@
 #include <memory>
 #include <algorithm>
 #include<array>
+#include <cassert>
+#include <cmath>
 #include"SimplexOps.h"
 namespace OptLib
 {
 	template<size_t dim>//объявляет шаблонный класс с безнаковым целым числом в 8 байт
 	using Point = std::array<double, dim>; //контейнер (Point) с числами с плавающей запятой и кол-ом этих чисел - dim
+	//static constexpr size_t Dim = dim;
 	template<size_t dim>
 	Point<dim> operator+ (const Point<dim>& arr1, const Point<dim> arr2) 
 	{
@@ -168,7 +171,7 @@ namespace OptLib
 			res[i] = matrix[i] * vector_dim1;
 		}
 		return res;
-	}
+	}	
 	template<size_t count, typename point>
 	SetOfPoints<count, point> operator*(const SetOfPoints<count, point>& mat1, const SetOfPoints<count, point>& mat2)
 	{
@@ -179,4 +182,47 @@ namespace OptLib
 		}
 		return res;
 	}
+
+	template<size_t count, typename point>
+	class RawSetOfPoints
+	{
+	protected:
+		SetOfPoints<count, point> ItsSetOfPoints;
+	public:
+		RawSetOfPoints() = default;
+		RawSetOfPoints(SetOfPoints<count, point>&& s):ItsSetOfPoints{ std::move(s) }{};
+		RawSetOfPoints(const SetOfPoints<count, point>& sop) :ItsSetOfPoints{ sop } {};
+		const point& operator[](size_t idx)
+		{
+			assert(idx < count);
+			return ItsSetOfPoints[idx];
+		}
+		point Mean() const
+		{
+			point p = ItsSetOfPoints[0];
+			if constexpr (count > 1) 
+			{
+				for (size_t i = 1; i < count; i++)
+				{
+					p = p + ItsSetOfPoints[i];
+				}
+
+			}
+			return p / count;
+		}
+		point Dis() const
+		{
+			
+			point mean = Mean();
+			point p = (ItsSetOfPoints[0] - mean)*(ItsSetOfPoints[0]-mean);
+			if constexpr (count > 1)
+			{
+				for (size_t i = 1; i < count; i++)
+				{
+					p = p + (ItsSetOfPoints[i] - mean) * (ItsSetOfPoints[i] - mean);
+				}
+			}
+			return p / count;
+		}
+	};
 }

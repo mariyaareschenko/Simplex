@@ -63,5 +63,21 @@ namespace OptLib
         std::cout<< "\nout" << "{" << res1 << "}";
         std::cout<< "\nout" << "{" << res2 << "}";
     }
+    void test_mean()
+    {
+        Point<2> p1{ 0,0 }, p2{ 0, 1 }, p3{ 1, 0 };
+        SetOfPoints <3, Point<2>> points = { p1,p2,p3 };
+        RawSetOfPoints<3, Point<2>> P = points;
+        Point<2> res = P.Mean();
+        std::cout<< "\nout" << "{" << res << "}";
+    }
+    void test_dis()
+    {
+        Point<2> p1{ 0,0 }, p2{ 0, 1 }, p3{ 1, 0 };
+        SetOfPoints <3, Point<2>> points = { p1,p2,p3 };
+        RawSetOfPoints<3, Point<2>> P = points;
+        Point<2> res = P.Dis();
+        std::cout << "\nout" << "{" << res << "}";
+    }
 }
     
