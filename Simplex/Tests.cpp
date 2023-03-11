@@ -1,4 +1,5 @@
 #include <iostream>
+#include<array>
 #include "Tests.h"
 #include "Simplex.h"
 #include "SimplexOps.h"
@@ -71,13 +72,18 @@ namespace OptLib
         Point<2> res = P.Mean();
         std::cout<< "\nout" << "{" << res << "}";
     }
-    void test_dis()
+    void test_pointval()
     {
-        Point<2> p1{ 0,0 }, p2{ 0, 1 }, p3{ 1, 0 };
-        SetOfPoints <3, Point<2>> points = { p1,p2,p3 };
-        RawSetOfPoints<3, Point<2>> P = points;
-        Point<2> res = P.Dis();
-        std::cout << "\nout" << "{" << res << "}";
+        constexpr size_t dim = 2;
+        constexpr size_t count = 3;
+        using point = Point<dim>;
+        using pointval = PointVal<dim>;
+
+        point p1{ 1,2 }, p2{ 2,1 }, p3{ 2,3 };
+        SetOfPoints<count, point> M{ p1,p2, p3 };
+        std::array<double, count>arr{ 2.0,3.0,3.5 };
+        SetOfPointsVal<count, point, pointval> P{std::move(M),std::move(arr)};
+        //std::cout<< "\nout" << "{" << P << "}";
     }
 }
     

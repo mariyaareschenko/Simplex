@@ -205,24 +205,52 @@ namespace OptLib
 				for (size_t i = 1; i < count; i++)
 				{
 					p = p + ItsSetOfPoints[i];
-				}
+				}	
 
 			}
 			return p / count;
 		}
-		point Dis() const
+		/*std::pair<point, point> Dispersion() const
+		{
+			point avg{ Mean() };
+			point result = (Point()[0] - avg) * (Points([0] - avg);
+			for (size_t i = 1; i < count; i++)
+				result = result + (Points()[i] - avg) * (Points()[i] - avg);
+			return { avg,result / (count + 0.0) };
+		}*/
+	};
+	template <size_t count, typename point, typename pointval>
+	class SetOfPointsVal :RawSetOfPoints < count, pointval>
+	{	
+
+	public:
+		SetOfPointsVal(SetOfPoints<count, pointval>&& s) :RawSetOfPoints<count, pointval>{ std::move(s) } {}
+		SetOfPointsVal(SetOfPoints<count, point>&& s, std::array<double, count>&& Pval) : 
+		SetOfPointsVal<count, point, pointval>{ std::move(make_field(std::move(s),std::move(Pval))) } {}
+	protected:
+		static SetOfPoints<count, pointval> make_field(SetOfPoints<count, point>&& s, std::array<double, count>&& vals)
+		{
+			SetOfPoints<count, pointval> P;
+			for (size_t i = 0;i < count;i++)
+			{
+				P[i] = pointval{ s[i], vals[i] };
+			}
+			return P;                                                                                                                                        
+		}
+	};
+	template<size_t count, typename point, typename pointval>
+	class SetOfPointsValSort : public SetOfPointsVal<count, point, pointval>
+	{
+	private:
+		void Sort(SetOfPointsVal<count, point,pointval> ItsSetOfPoints)
 		{
 			
-			point mean = Mean();
-			point p = (ItsSetOfPoints[0] - mean)*(ItsSetOfPoints[0]-mean);
-			if constexpr (count > 1)
-			{
-				for (size_t i = 1; i < count; i++)
-				{
-					p = p + (ItsSetOfPoints[i] - mean) * (ItsSetOfPoints[i] - mean);
-				}
-			}
-			return p / count;
+			std::sort(ItsSetOfPoints.begin(), ItsSetOfPoints.end());
 		}
+	public:
+		SetOfPointsValSort() = default;
+		SetOfPointsValSort(SetOfPoints<count, pointval>&& s) :SetOfPointsVal<count, point, pointval>{ std::move(s) } {this->Sort();}
+		SetOfPointsValSort(SetOfPoints<count,point>&& s,std::array<double,count>&&vals):
+			SetOfPointsVal<count, point, pointval>{ std::move(s),std::move(vals) } {this->Sort();}
 	};
 }

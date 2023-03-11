@@ -16,5 +16,5 @@ namespace OptLib
 	void test_sqrt();
 	void test_matrix();
 	void test_mean();
-	void test_dis();
+	void test_pointval();
 }
