@@ -4,6 +4,7 @@
 #include "Simplex.h"
 #include "SimplexOps.h"
 #include "Stream.h"
+#include"Function.h"
 namespace OptLib
 {
     void test_plus()
@@ -84,6 +85,17 @@ namespace OptLib
         std::array<double, count>arr{ 2.0,3.0,3.5 };
         SetOfPointsVal<count, point, pointval> P{std::move(M),std::move(arr)};
         //std::cout<< "\nout" << "{" << P << "}";
+    }
+    void test_sin()
+    {
+        Point<1> p1{ 1.2 }; 
+        Point<2> p2{ -1,2.3 };
+        double res1, res2, resk;
+        FuncInterface::IFunc<1>* f1 = new ConcretFunc::Sin1{};
+        FuncInterface::IFunc<2>* f2 = new ConcretFunc::Sin2{};
+        res1 = (*f1)(p1);
+        res2 = (*f2)(p2);
+        std::cout << "\nsin p1: " << res1<<"\n"<<"sin p2:"<< res2;
     }
 }
     

@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Simplex.h"
 #include "SimplexOps.h"
+#include "Function.h"
 
 namespace OptLib
 {
@@ -17,4 +18,5 @@ namespace OptLib
 	void test_matrix();
 	void test_mean();
 	void test_pointval();
+	void test_sin();
 }
