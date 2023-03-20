@@ -97,5 +97,11 @@ namespace OptLib
         res2 = (*f2)(p2);
         std::cout << "\nsin p1: " << res1<<"\n"<<"sin p2:"<< res2;
     }
+    void test_paraboloid()
+    {
+        Point<1> p1{ 1.1 };
+        double res;
+
+    }
 }
     

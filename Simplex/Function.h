@@ -47,57 +47,101 @@ namespace FuncInterface
 	class IFuncWithHess : public IFuncWhithGrad<dim>, public IHess<dim>
 	{};
 }
-namespace ConcretFunc
-{
-	class Sin1 : public FuncInterface ::IFuncWithHess<1>
-	{
-	public:
-		double operator()(const OptLib::Point<1>& p)const override
-		{
-			return {sin(p[0])};
-		}
-		OptLib::Point<1> grad(const OptLib::Point<1>& p) const override
-		{
-			return OptLib::Point<1>{cos(p[0])};
-		}
-		OptLib::Point<1> hess(const OptLib::Point<1>& p) const override
-		{
-			return OptLib::Point<1>{-sin(p[0])};
-		}
-	};
+namespace OptLib {
 
-	class Sin2 :public FuncInterface::IFuncWithHess<2>
+	namespace ConcretFunc
 	{
-	public:
-		double operator()(const OptLib::Point<2>& p) const override
+		class Sin1 : public FuncInterface::IFuncWithHess<1>
 		{
-			return { sin(p[0] + p[1]) };
-		}
-		OptLib::Point<2> grad(const OptLib::Point<2>& p) const override
+		public:
+			double operator()(const OptLib::Point<1>& p)const override
+			{
+				return { sin(p[0]) };
+			}
+			OptLib::Point<1> grad(const OptLib::Point<1>& p) const override
+			{
+				return OptLib::Point<1>{cos(p[0])};
+			}
+			OptLib::Point<1> hess(const OptLib::Point<1>& p) const override
+			{
+				return OptLib::Point<1>{-sin(p[0])};
+			}
+		};
+
+		class Sin2 :public FuncInterface::IFuncWithHess<2>
 		{
-			return OptLib::Point<2>{cos(p[0] + p[1])};
-		}
-		OptLib::Point<2> hess(const OptLib::Point<2>& p) const override
+		public:
+			double operator()(const OptLib::Point<2>& p) const override
+			{
+				return { sin(p[0] + p[1]) };
+			}
+			OptLib::Point<2> grad(const OptLib::Point<2>& p) const override
+			{
+				return OptLib::Point<2>{cos(p[0] + p[1])};
+			}
+			OptLib::Point<2> hess(const OptLib::Point<2>& p) const override
+			{
+				return OptLib::Point<2>{-sin(p[0] + p[1])};
+			}
+		};
+		/*class SinK :public FuncInterface::IFuncWithHess<1>
 		{
-			return OptLib::Point<2>{-sin(p[0] + p[1])};
-		}
-	};
-	/*class SinK :public FuncInterface::IFuncWithHess<1>
-	{
-	public:
-		
-		double operator()(const OptLib::Point<1>& p)const override
+		public:
+
+			double operator()(const OptLib::Point<1>& p)const override
+			{
+
+				return { sin(p[0] ) };
+			}
+			OptLib::Point<1> grad(const OptLib::Point<1>& p) const override
+			{
+				return OptLib::Point<1>{cos(p[0])};
+			}
+			OptLib::Point<1> hess(const OptLib::Point<1>& p) const override
+			{
+				return OptLib::Point<1>{-sin(p[0])};
+			}
+		};*/
+		template<size_t dim>
+		class Paraboloid :public FuncInterface::IFuncWhithGrad<dim>
 		{
-			
-			return { sin(p[0] ) };
-		}
-		OptLib::Point<1> grad(const OptLib::Point<1>& p) const override
-		{
-			return OptLib::Point<1>{cos(p[0])};
-		}
-		OptLib::Point<1> hess(const OptLib::Point<1>& p) const override
-		{
-			return OptLib::Point<1>{-sin(p[0])};
-		}
-	};*/
+		public:
+			double operator ()(const Point<dim>& p)const override
+			{
+				Point<dim> res = p * p;
+				return pointToDouble(res);
+			}
+			double pointToDouble(const Point<dim>& p)
+			{
+				double res = 0;
+				for (auto& el : p)
+					res += el;
+				return res;
+			}
+
+			double operator()(const Point<dim>& x, SetOfPoints<dim, Point<dim>> mat_A)
+			{
+				SetOfPoints<dim, Point<1>>x_tr{ Tr(x) };
+				SetOfPoints<dim, Point<1>> mult = x_tr * mat_A;
+				double res = mult * x;
+				return res;
+			}
+
+			Point <dim> grad(const Point<dim>& p) const override
+			{
+				return 2 * p;
+			}
+
+			SetOfPoints<dim, Point<1>> Tr(const Point<dim>& p)
+			{
+				SetOfPoints<dim, Point<1>> tr_mat;
+				for (size_t i = 0;i < dim;i++)
+				{
+					Point<1>  q{ p[i] };
+					tr_mat[i] = q;
+				}
+				return tr_mat;
+			}
+		};
+	}
 }

@@ -182,7 +182,21 @@ namespace OptLib
 		}
 		return res;
 	}
-
+	template<size_t dim>
+	SetOfPoints<dim, Point<1>> operator*(const SetOfPoints<dim, Point<1>> x, const SetOfPoints<dim, Point<dim>> A)
+	{
+		SetOfPoints<dim, Point<1>>res;
+		for (size_t i = 0; i < dim;i++)
+		{
+			Point<1> p1{ 0.0 };
+			for (size_t j = 0; j < dim;j++)
+			{
+				p1 = p1 + x[j][0] * A[i][j];
+			}
+			res[i] = p1;
+		}
+		return res;
+	}
 	template<size_t count, typename point>
 	class RawSetOfPoints
 	{
