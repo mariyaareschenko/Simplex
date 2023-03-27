@@ -19,4 +19,6 @@ namespace OptLib
 	void test_mean();
 	void test_pointval();
 	void test_sin();
+	//void test_paraboloid();
+	void test_grad();
 }

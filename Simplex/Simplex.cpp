@@ -17,5 +17,6 @@ int main()
 	OptLib::test_matrix();
 	OptLib::test_mean();
 	OptLib::test_sin();
+	//OptLib::test_paraboloid();
 }
 

@@ -97,10 +97,20 @@ namespace OptLib
         res2 = (*f2)(p2);
         std::cout << "\nsin p1: " << res1<<"\n"<<"sin p2:"<< res2;
     }
-    void test_paraboloid()
+    /*void test_paraboloid()
     {
-        Point<1> p1{ 1.1 };
+        Point<2> p1{ 1,1 }, p2{ 2,2 }, t{ 4,5 }, grad_res;
         double res;
+        SetOfPoints<2, Point<2>> MatrConst{ p1,p2 };
+        ConcretFunc::Paraboloid<2> paraboloid;
+        res = paraboloid(t);
+        std::cout << "valFunc" << t << "=" << res;
+    }*/
+    void test_grad()
+    {
+        Point <1> p1{ 2.2 }, p2{ 1.5 };
+        double res;
+        FuncInterface::IFunc<1>* f1 = new ConcretFunc::LinFunc{};
 
     }
 }

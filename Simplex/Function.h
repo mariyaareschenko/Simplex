@@ -3,49 +3,74 @@
 #include<cmath>
 #include"Simplex.h"
 
-namespace FuncInterface
+namespace OptLib
 {
+	namespace FuncInterface
+	{
 
-	template<size_t dim>
-	class IFunc
-	{
-	public:	
-		virtual double operator()(const OptLib::Point<dim>& p) const = 0;
-		template<size_t count>
-		OptLib::Point<count> operator()(const OptLib::SetOfPoints<count, OptLib::Point<dim>>& arr) const
+		template<size_t dim>
+		class IFunc
 		{
-			OptLib::Point<count> out;
-			for (int i = 0;i < count;i++)
-				out = this->operator()(arr[i]);
-			return out;
-		}
-	};
-	template<size_t dim>
-	class IGrad
-	{
-	public:
-		virtual OptLib::Point<dim> grad(const OptLib::Point<dim>& p) const = 0;
-		template<size_t count>
-		OptLib::SetOfPoints<count, OptLib::Point<dim>> grad(const OptLib::SetOfPoints<count, OptLib::Point<dim>>& arr) const
+		public:
+			virtual double operator()(const Point<dim>& p) const = 0;
+			template<size_t count>
+			OptLib::Point<count> operator()(const SetOfPoints<count, Point<dim>>& arr) const
+			{
+				Point<count> out;
+				for (int i = 0;i < count;i++)
+					out = this->operator()(arr[i]);
+				return out;
+			}
+		};
+		template<size_t dim>
+		class IGrad
 		{
-			OptLib::SetOfPoints<count, OptLib::Point<dim>> out;
-			for (int i = 0; i < count;i++)
-				out = this->grad(arr[i]);
-			return out;
-		}		
-	};
-	template<size_t dim>
-	class IHess
-	{
-	public:
-		virtual OptLib::Point<dim> hess(const OptLib::Point<dim>& p) const = 0;
-	};
-	template<size_t dim>
-	class IFuncWhithGrad : public IFunc<dim>,public IGrad<dim>
-	{};
-	template <size_t dim>
-	class IFuncWithHess : public IFuncWhithGrad<dim>, public IHess<dim>
-	{};
+		public:
+			virtual Point<dim> grad(const Point<dim>& p) const = 0;
+			template<size_t count>
+			SetOfPoints<count, Point<dim>> grad(const SetOfPoints<count, Point<dim>>& arr) const
+			{
+				SetOfPoints<count, Point<dim>> out;
+				for (int i = 0; i < count;i++)
+					out = this->grad(arr[i]);
+				return out;
+			}
+		};
+		template<size_t dim>
+		class IHess
+		{
+		public:
+			virtual Point<dim> hess(const Point<dim>& p) const = 0;
+		};
+		template<size_t dim>
+		class IFuncWhithGrad : public IFunc<dim>, public IGrad<dim>
+		{};
+		template <size_t dim>
+		class IFuncWithHess : public IFuncWhithGrad<dim>, public IHess<dim>
+		{};
+
+		template<size_t dimX, size_t dimP>
+		class IFuncParam
+		{
+		public:
+			virtual double operator()(const Point<dimX>& x, const Point<dimP>& p) const = 0;
+			template<size_t count>
+			Point<count> operator()(const SetOfPoints<count, Point<dimX>>& x, const Point<dimP>& p) const
+			{
+				Point<count> out;
+				for (int i = 0;i < count;i++)
+					out[i] = this->operator()(x[i], p);
+				return out;
+			}
+		};
+
+		template<size_t dimX, size_t dimP>
+		class IFunParamGrag :public IFuncParam<dimX, dimP>
+		{
+		public:
+			virtual Point<dimX> GradP(const Point<dimX>& x, const Point<dimP>& p) const = 0;
+		};
+	}
 }
 namespace OptLib {
 
@@ -127,11 +152,6 @@ namespace OptLib {
 				return res;
 			}
 
-			Point <dim> grad(const Point<dim>& p) const override
-			{
-				return 2 * p;
-			}
-
 			SetOfPoints<dim, Point<1>> Tr(const Point<dim>& p)
 			{
 				SetOfPoints<dim, Point<1>> tr_mat;
@@ -141,6 +161,35 @@ namespace OptLib {
 					tr_mat[i] = q;
 				}
 				return tr_mat;
+			}
+		};
+		class LinFunc :public FuncInterface::IFuncParam<1, 1>
+		{
+		public:
+			double operator()(const Point<1>& x, const Point<1>& p) const override
+			{
+				return x[0] * p[0];
+			}
+		};
+		class LinFuncGrad :public FuncInterface::IFunParamGrag<1, 1>
+		{
+		public:
+			double operator()(const Point<1>& x, const Point<1>& p) const override
+			{
+				return x[0] * p[0];
+			}
+			Point<1> GradP(const Point<1>&x, const Point<1>&p) const override
+			{
+				return p;
+			}
+		};
+		template<size_t dimX, size_t dimP>
+		class Exp :public FuncInterface::IFuncParam<dimX, dimP>
+		{
+		public:
+			double operator()(const Point<dimX>& x, const Point<dimP>& p) const override
+			{
+				for (size_t i=0; i<)
 			}
 		};
 	}
