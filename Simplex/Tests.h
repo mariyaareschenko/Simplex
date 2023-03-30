@@ -20,5 +20,5 @@ namespace OptLib
 	void test_pointval();
 	void test_sin();
 	//void test_paraboloid();
-	void test_grad();
+	void test_linfunc();
 }

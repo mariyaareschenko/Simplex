@@ -79,34 +79,34 @@ namespace OptLib {
 		class Sin1 : public FuncInterface::IFuncWithHess<1>
 		{
 		public:
-			double operator()(const OptLib::Point<1>& p)const override
+			double operator()(const Point<1>& p)const override
 			{
 				return { sin(p[0]) };
 			}
-			OptLib::Point<1> grad(const OptLib::Point<1>& p) const override
+			Point<1> grad(const Point<1>& p) const override
 			{
 				return OptLib::Point<1>{cos(p[0])};
 			}
-			OptLib::Point<1> hess(const OptLib::Point<1>& p) const override
+			Point<1> hess(const Point<1>& p) const override
 			{
-				return OptLib::Point<1>{-sin(p[0])};
+				return Point<1>{-sin(p[0])};
 			}
 		};
 
 		class Sin2 :public FuncInterface::IFuncWithHess<2>
 		{
 		public:
-			double operator()(const OptLib::Point<2>& p) const override
+			double operator()(const Point<2>& p) const override
 			{
 				return { sin(p[0] + p[1]) };
 			}
-			OptLib::Point<2> grad(const OptLib::Point<2>& p) const override
+			Point<2> grad(const Point<2>& p) const override
 			{
-				return OptLib::Point<2>{cos(p[0] + p[1])};
+				return Point<2>{cos(p[0] + p[1])};
 			}
-			OptLib::Point<2> hess(const OptLib::Point<2>& p) const override
+			Point<2> hess(const Point<2>& p) const override
 			{
-				return OptLib::Point<2>{-sin(p[0] + p[1])};
+				return Point<2>{-sin(p[0] + p[1])};
 			}
 		};
 		/*class SinK :public FuncInterface::IFuncWithHess<1>
@@ -166,7 +166,7 @@ namespace OptLib {
 		class LinFunc :public FuncInterface::IFuncParam<1, 1>
 		{
 		public:
-			double operator()(const Point<1>& x, const Point<1>& p) const override
+			double operator()(const Point<1>& x, const Point<1>&p) const override
 			{
 				return x[0] * p[0];
 			}
@@ -178,18 +178,9 @@ namespace OptLib {
 			{
 				return x[0] * p[0];
 			}
-			Point<1> GradP(const Point<1>&x, const Point<1>&p) const override
+			Point<1> GradP(const Point<1>& x, const Point<1>& p) const override
 			{
 				return p;
-			}
-		};
-		template<size_t dimX, size_t dimP>
-		class Exp :public FuncInterface::IFuncParam<dimX, dimP>
-		{
-		public:
-			double operator()(const Point<dimX>& x, const Point<dimP>& p) const override
-			{
-				for (size_t i=0; i<)
 			}
 		};
 	}

@@ -106,12 +106,15 @@ namespace OptLib
         res = paraboloid(t);
         std::cout << "valFunc" << t << "=" << res;
     }*/
-    void test_grad()
+    void test_linfunc()
     {
-        Point <1> p1{ 2.2 }, p2{ 1.5 };
+        Point<1>p1{ 1.2 }, p2{ 2.3 }, resp;
         double res;
-        FuncInterface::IFunc<1>* f1 = new ConcretFunc::LinFunc{};
-
+        FuncInterface::IFuncParam<1,1>* f1 = new ConcretFunc::LinFunc{};
+        FuncInterface::IFunParamGrag<1,1>* f2 = new ConcretFunc::LinFuncGrad{};
+        res = (*f1)(p1,p2);
+        resp = f2->GradP(p1, p2);
+        std::cout << "\nout linal function: " << res<< "\nout function grad: "<< resp;
     }
 }
     
